@@ -11,4 +11,14 @@ spec:
   imagePullPolicy: IfNotPresent
   phase: AUTHN
   pluginConfig:
-    requiredKeys: ["id", "token"]
+    validation:
+    - match:
+        prefix: "/pus/sea"
+        # location of root schema can be: 
+        # ---- relative url of upstream, how a wasm filter know the upstream's port
+        # ---- absolute url, for example: https://acme.org/something-schema.json
+        # ---- file path, for example: file://etc/fwx/schemas/json/something-schema.json, the files must be mounted to the sidecar
+        schema: "/pus/.well-known/sea-request-schema.json" 
+        mapping:
+        - source: "https://acme.org"
+          target: "file://etc/fwx/schemas"
